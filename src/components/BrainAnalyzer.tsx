@@ -45,8 +45,8 @@ function BrainAnalyzer() {
     setIsAnalyzing(false);
     setShowExplosion(true);
     
-    // Show explosion GIF for 1.5 seconds before showing result
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Show explosion GIF for 3 seconds before showing result
+    await new Promise(resolve => setTimeout(resolve, 3000));
     setShowExplosion(false);
     setShowResult(true);
   };
