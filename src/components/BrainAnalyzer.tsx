@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Brain } from 'lucide-react';
 import NumberInput from './NumberInput';
@@ -11,37 +11,75 @@ function BrainAnalyzer() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [currentGifIndex, setCurrentGifIndex] = useState(0);
   const { playSound } = useSound('/brainrot.mp3');
 
-  const triggerFireworks = () => {
-    const duration = 3000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+  const brainrotGifs = [
+    'https://media.tenor.com/yKCeGRA6_IEAAAAM/critical-thinking-spong-bob.gif',
+    'https://media.tenor.com/_LPmVc8rs8MAAAAM/rodin-yoyo.gif'
+  ];
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAnalyzing) {
+      interval = setInterval(() => {
+        setCurrentGifIndex((prev) => (prev + 1) % brainrotGifs.length);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isAnalyzing]);
+
+  const triggerExplosion = () => {
+    const duration = 15 * 1000;
+    const animationEnd = Date.now() + duration;
+    const colors = ['#FF4444', '#FFA500', '#FFD700'];
+  
     function randomInRange(min: number, max: number) {
       return Math.random() * (max - min) + min;
     }
-
+  
     const interval: any = setInterval(function() {
       const timeLeft = animationEnd - Date.now();
-
+  
       if (timeLeft <= 0) {
         clearInterval(interval);
         setShowResult(true);
         return;
       }
-
-      const particleCount = 50 * (timeLeft / duration);
+  
+      const particleCount = 100;
+      
+      // Center explosion
       confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        particleCount: particleCount,
+        spread: 360,
+        startVelocity: 45,
+        decay: 0.9,
+        gravity: 1,
+        drift: 0,
+        ticks: 200,
+        origin: { x: 0.5, y: 0.5 },
+        colors: colors,
+        shapes: ['circle'],
       });
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-      });
+      
+      // Random smaller explosions
+      if (Math.random() < 0.3) {
+        confetti({
+          particleCount: 50,
+          spread: 120,
+          startVelocity: 30,
+          decay: 0.9,
+          gravity: 1,
+          drift: randomInRange(-0.5, 0.5),
+          origin: { 
+            x: randomInRange(0.2, 0.8), 
+            y: randomInRange(0.2, 0.8) 
+          },
+          colors: colors,
+          shapes: ['circle'],
+        });
+      }
     }, 250);
   };
 
@@ -57,7 +95,7 @@ function BrainAnalyzer() {
     }
     
     playSound();
-    triggerFireworks();
+    triggerExplosion();
     setIsAnalyzing(false);
   };
 
@@ -75,28 +113,23 @@ function BrainAnalyzer() {
       />
 
       {isAnalyzing && (
-        <div className="mt-8 text-center relative min-h-[400px]">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-  
-            <img 
-              src="https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif"
-              alt="Think About It"
-              className="floating-gif"
-            />
-            <img 
-              src="https://media.giphy.com/media/WRQBXSCnEFJIuxktnw/giphy.gif"
-              alt="Mind Blown"
-              className="floating-gif"
-            />
-          </div>
-          <div className="brain-scan-container p-8 mb-6 relative z-20">
+        <div className="mt-8 text-center">
+          <div className="brain-scan-container p-8 mb-6">
             <div className="brain-scan-line"></div>
             <div className="flex justify-center mb-4">
               <div className="brain-icon-container">
                 <Brain className="w-16 h-16 text-purple-400" />
               </div>
             </div>
-            <p className="text-lg text-purple-400 font-semibold">{currentMessage}</p>
+            <p className="text-lg text-purple-400 font-semibold mb-8">{currentMessage}</p>
+            
+            <div className="flex justify-center">
+              <img 
+                src={brainrotGifs[currentGifIndex]}
+                alt="Brain Processing"
+                className="w-64 h-64 object-cover rounded-lg border-2 border-purple-500"
+              />
+            </div>
           </div>
         </div>
       )}
