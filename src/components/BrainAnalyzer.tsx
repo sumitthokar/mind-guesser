@@ -45,8 +45,8 @@ function BrainAnalyzer() {
     setIsAnalyzing(false);
     setShowExplosion(true);
     
-    // Show explosion GIF for 2 seconds before showing result
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Show explosion GIF for 1.5 seconds before showing result
+    await new Promise(resolve => setTimeout(resolve, 1500));
     setShowExplosion(false);
     setShowResult(true);
   };
@@ -89,7 +89,7 @@ function BrainAnalyzer() {
       {showExplosion && (
         <div className="flex justify-center mt-8">
           <img 
-            src="/giphy.gif"
+            src="/R.gif"
             alt="Explosion"
             className="w-64 h-64 object-cover"
           />
