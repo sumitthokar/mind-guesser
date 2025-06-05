@@ -9,11 +9,11 @@ function Header({ icon }: HeaderProps) {
     <header className="text-center">
       <div className="flex items-center justify-center gap-4">
         {icon}
-        <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+        <h1 className="text-4xl font-bold text-[#00ff00] glitch-text">
           Mind Guesser
         </h1>
       </div>
-      <p className="mt-4 text-lg text-gray-300">
+      <p className="mt-4 text-lg text-[#00ff00] opacity-80">
         The Most Advanced Brain Pattern Analyzer in the Universe
       </p>
     </header>

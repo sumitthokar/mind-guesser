@@ -2,30 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    text-shadow: -2px 0 #0f0, 2px 2px #f00;
+  }
+  25% {
+    transform: translate(-2px, 2px);
+    text-shadow: 2px -2px #0f0, -2px -2px #f00;
+  }
+  50% {
+    transform: translate(2px, -2px);
+    text-shadow: 2px 0 #0f0, -2px 2px #f00;
+  }
+  75% {
+    transform: translate(-2px, -2px);
+    text-shadow: -2px 2px #0f0, 2px -2px #f00;
+  }
+  100% {
+    transform: translate(0);
+    text-shadow: -2px 0 #0f0, 2px 2px #f00;
+  }
+}
+
+.glitch-text {
+  animation: glitch 0.3s infinite;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes borderGlow {
-  0%, 100% { border-color: rgb(168, 85, 247); }
-  50% { border-color: rgb(219, 39, 119); }
+  0%, 100% { border-color: #00ff00; }
+  50% { border-color: #0f0; }
 }
 
 @keyframes numberReveal {
   from { transform: scale(0.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes brainScan {
-  0% { transform: translateY(-100%); opacity: 0.5; }
-  50% { transform: translateY(100%); opacity: 0.8; }
-  100% { transform: translateY(-100%); opacity: 0.5; }
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .animate-fadeIn {
@@ -38,25 +54,4 @@
 
 .animate-numberReveal {
   animation: numberReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.brain-scan-container {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-}
-
-.brain-scan-line {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #a855f7, transparent);
-  animation: brainScan 3s linear infinite;
-}
-
-.brain-icon-container {
-  animation: rotate 4s linear infinite;
 }

@@ -15,15 +15,16 @@ function NumberInput({ value, onChange, onAnalyze, isAnalyzing }: NumberInputPro
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Enter your number..."
-        className="w-full max-w-xs px-4 py-2 text-lg bg-gray-800 border border-purple-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+        className="w-full max-w-xs px-4 py-2 text-lg bg-[#2a2a2a] border-2 border-[#00ff00] rounded-lg 
+                 focus:outline-none focus:ring-2 focus:ring-[#00ff00] text-[#00ff00] placeholder-[#00ff00]/50"
         disabled={isAnalyzing}
       />
       <button
         onClick={onAnalyze}
         disabled={isAnalyzing || !value}
-        className="px-6 py-3 text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg 
-                 hover:from-purple-600 hover:to-pink-600 transition-all duration-200 disabled:opacity-50
-                 disabled:cursor-not-allowed transform hover:scale-105"
+        className="px-6 py-3 text-lg font-bold bg-[#2a2a2a] border-2 border-[#00ff00] rounded-lg 
+                 text-[#00ff00] hover:bg-[#00ff00] hover:text-[#1a1a1a] transition-all duration-200 
+                 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
       >
         {isAnalyzing ? 'Analyzing...' : 'Analyze My Brain'}
       </button>

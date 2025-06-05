@@ -45,7 +45,6 @@ function BrainAnalyzer() {
     setIsAnalyzing(false);
     setShowExplosion(true);
     
-    // Show explosion GIF for 3 seconds before showing result
     await new Promise(resolve => setTimeout(resolve, 3000));
     setShowExplosion(false);
     setShowResult(true);
@@ -53,7 +52,7 @@ function BrainAnalyzer() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <p className="text-center mb-8 text-gray-300">
+      <p className="text-center mb-8 text-[#00ff00]/80">
         Pick a number and I will guess it using advanced brain pattern analysis technology
       </p>
       
@@ -66,20 +65,19 @@ function BrainAnalyzer() {
 
       {isAnalyzing && (
         <div className="mt-8 text-center">
-          <div className="brain-scan-container p-8 mb-6">
-            <div className="brain-scan-line"></div>
+          <div className="p-8 mb-6 bg-[#2a2a2a] border-2 border-[#00ff00] rounded-lg">
             <div className="flex justify-center mb-4">
-              <div className="brain-icon-container">
-                <Brain className="w-16 h-16 text-purple-400" />
+              <div className="animate-spin">
+                <Brain className="w-16 h-16 text-[#00ff00]" />
               </div>
             </div>
-            <p className="text-lg text-purple-400 font-semibold mb-8">{currentMessage}</p>
+            <p className="text-lg text-[#00ff00] font-bold mb-8 glitch-text">{currentMessage}</p>
             
             <div className="flex justify-center">
               <img 
                 src={brainrotGifs[currentGifIndex]}
                 alt="Brain Processing"
-                className="w-64 h-64 object-cover rounded-lg border-2 border-purple-500"
+                className="w-64 h-64 object-cover rounded-lg border-2 border-[#00ff00]"
               />
             </div>
           </div>
