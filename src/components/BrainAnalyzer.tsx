@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import confetti from 'canvas-confetti';
 import { Brain } from 'lucide-react';
 import NumberInput from './NumberInput';
 import ResultDisplay from './ResultDisplay';
@@ -12,6 +11,7 @@ function BrainAnalyzer() {
   const [showResult, setShowResult] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
   const [currentGifIndex, setCurrentGifIndex] = useState(0);
+  const [showExplosion, setShowExplosion] = useState(false);
   const { playSound } = useSound('/brainrot.mp3');
 
   const brainrotGifs = [
@@ -29,63 +29,10 @@ function BrainAnalyzer() {
     return () => clearInterval(interval);
   }, [isAnalyzing]);
 
-  const triggerExplosion = () => {
-    const duration = 15 * 1000;
-    const animationEnd = Date.now() + duration;
-    const colors = ['#FF4444', '#FFA500', '#FFD700'];
-  
-    function randomInRange(min: number, max: number) {
-      return Math.random() * (max - min) + min;
-    }
-  
-    const interval: any = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-  
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        setShowResult(true);
-        return;
-      }
-  
-      const particleCount = 100;
-      
-      // Center explosion
-      confetti({
-        particleCount: particleCount,
-        spread: 360,
-        startVelocity: 45,
-        decay: 0.9,
-        gravity: 1,
-        drift: 0,
-        ticks: 200,
-        origin: { x: 0.5, y: 0.5 },
-        colors: colors,
-        shapes: ['circle'],
-      });
-      
-      // Random smaller explosions
-      if (Math.random() < 0.3) {
-        confetti({
-          particleCount: 50,
-          spread: 120,
-          startVelocity: 30,
-          decay: 0.9,
-          gravity: 1,
-          drift: randomInRange(-0.5, 0.5),
-          origin: { 
-            x: randomInRange(0.2, 0.8), 
-            y: randomInRange(0.2, 0.8) 
-          },
-          colors: colors,
-          shapes: ['circle'],
-        });
-      }
-    }, 250);
-  };
-
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
     setShowResult(false);
+    setShowExplosion(false);
     
     const messages = generateAnalyzerMessages();
     
@@ -95,8 +42,13 @@ function BrainAnalyzer() {
     }
     
     playSound();
-    triggerExplosion();
     setIsAnalyzing(false);
+    setShowExplosion(true);
+    
+    // Show explosion GIF for 2 seconds before showing result
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setShowExplosion(false);
+    setShowResult(true);
   };
 
   return (
@@ -131,6 +83,16 @@ function BrainAnalyzer() {
               />
             </div>
           </div>
+        </div>
+      )}
+
+      {showExplosion && (
+        <div className="flex justify-center mt-8">
+          <img 
+            src="/giphy.gif"
+            alt="Explosion"
+            className="w-64 h-64 object-cover"
+          />
         </div>
       )}
 
